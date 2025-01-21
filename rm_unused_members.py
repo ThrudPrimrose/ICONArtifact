@@ -2,7 +2,7 @@ import sys
 import dace
 import os
 
-velo_base_name = "velocity_tendencies_simplified_f.sdfgz"
+velo_base_name = "velocity_tendencies_simplified_f_phil.sdfgz"
 velo_tendencies = dace.SDFG.from_file(velo_base_name)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
