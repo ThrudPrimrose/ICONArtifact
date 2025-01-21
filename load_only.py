@@ -37,4 +37,3 @@ with open(log_file, "a") as f:
         f.write(f"{branch}: did not succesfully compile CFG SDFG\n")
         print("Error:", e)
 
-

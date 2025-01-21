@@ -1,7 +1,4 @@
 import dace
-
-import dace
-
 import ast
 
 class VariableCollector(ast.NodeVisitor):
@@ -34,28 +31,11 @@ def get_variables_from_expr(expr):
     collector.visit(tree)
     return collector.variables
 
-def clean_unused_members(sdfg: dace.SDFG):
+def clean_unused_members(sdfg: dace.SDFG, save_names: bool = False, save_as: str = None):
     # Find all data descriptors
     all_members = set()
 
     data_descriptors = sdfg.arrays.items()
-
-    # Print everything
-    for data_desc_name, data_desc in data_descriptors:
-        if isinstance(data_desc, dace.data.Structure):
-            stack = [(data_desc_name, data_desc, 1)]
-            while stack:
-                current_name, current_desc, depth = stack.pop()
-                print("\t" * depth, current_name, type(current_desc))
-                if isinstance(current_desc, dace.data.Structure):
-                    for member_name, member in current_desc.members.items():
-                        stack.append((member_name, member, depth + 1))
-                if isinstance(current_desc, dace.data.ContainerArray):
-                    stack.append((current_name + "_ca", current_desc.stype, depth + 1))
-        else:
-            print(data_desc_name, type(data_desc))
-
-    all_members = set()
 
     # Add both full name with dots and names of all members one by one
     def add_members(name, desc, depth, path):
@@ -88,7 +68,6 @@ def clean_unused_members(sdfg: dace.SDFG):
     all_members = all_members.union(sdfg.symbols.keys())
     all_members = all_members.union(sdfg.constants.keys())
 
-    print(all_members)
 
     used_names = set()
 
@@ -133,8 +112,6 @@ def clean_unused_members(sdfg: dace.SDFG):
                 accesses.add(a)
         used_names = used_names.union(accesses)
 
-    print("Used names", used_names)
-    print("All names", all_members)
 
     unused_names = set()
     for name in all_members:
@@ -146,10 +123,10 @@ def clean_unused_members(sdfg: dace.SDFG):
                 unused_names.add(name)
                 break
 
-    print("Unused names", unused_names)
-
     unregistered_names =  used_names - all_members
+
     print("Unregistered names", unregistered_names)
+
     print("#All names:", len(all_members))
     print("#Unused names:", len(unused_names))
     print("#Used names:", len(used_names))
@@ -175,6 +152,7 @@ def clean_unused_members(sdfg: dace.SDFG):
 
     for unused_name in unused_names:
         try_del(unused_name, sdfg.arrays, 0)
+        # TODO: try uncomment?
         #if unused_name in sdfg.symbols:
         #    sdfg.remove_symbol(unused_name)
         #    num_removed_symbol += 1
@@ -182,12 +160,26 @@ def clean_unused_members(sdfg: dace.SDFG):
         #    sdfg.remove_constant(unused_name)
         #    num_removed_constant += 1
 
-    sdfg.save("sdfgs/velocity_tendencies_simplified_f_pruned.sdfgz")
-
     sdfg.validate()
-    sdfg.save("sdfgs/velocity_tendencies_simplified_f_pruned.sdfgz")
+    sdfg.compile()
+
+    if save_as is not None:
+        sdfg.save("sdfgs/velocity_tendencies_simplified_f_pruned.sdfgz")
     print("Removed", num_removed_arr, "arrays")
     print("Removed", num_removed_member, "members")
     print("Removed", num_removed_symbol, "symbols")
     print("Removed", num_removed_constant, "constants")
-    sdfg.compile()
+
+    if save_names:
+        with open("unused_names.txt", "w") as f:
+            for name in unused_names:
+                f.write(name + "\n")
+        with open("all_names.txt", "w") as f:
+            for name in all_members:
+                f.write(name + "\n")
+        with open("used_names.txt", "w") as f:
+            for name in used_names:
+                f.write(name + "\n")
+        with open("unregistered_names.txt", "w") as f:
+            for name in unregistered_names:
+                f.write(name + "\n")
