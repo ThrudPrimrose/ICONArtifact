@@ -1,0 +1,193 @@
+{
+  "type": "SDFG",
+  "attributes": {
+    "name": "test_interstate_1",
+    "_arrays": {
+      "A": {
+        "type": "Array",
+        "attributes": {
+          "strides": [
+            "1"
+          ],
+          "total_size": "1",
+          "offset": [
+            "0"
+          ],
+          "dtype": "float32",
+          "shape": [
+            "1"
+          ],
+          "debuginfo": null
+        }
+      }
+    },
+    "global_code": {
+      "frame": {
+        "string_data": "",
+        "language": "CPP"
+      }
+    },
+    "init_code": {
+      "frame": {
+        "string_data": "",
+        "language": "CPP"
+      }
+    },
+    "exit_code": {
+      "frame": {
+        "string_data": "",
+        "language": "CPP"
+      }
+    },
+    "guid": "792573c0-af13-402a-ba21-9bc050720758",
+    "hash": "852d252726cf8f34e51c1d85a0bef6270498b108e6b6d183a5a01014d7d9c8ca"
+  },
+  "nodes": [
+    {
+      "type": "SDFGState",
+      "label": "state1",
+      "id": 0,
+      "collapsed": false,
+      "scope_dict": {
+        "-1": []
+      },
+      "nodes": [],
+      "edges": [],
+      "attributes": {
+        "guid": "85191a86-2dfc-459d-9078-164a87966349"
+      }
+    },
+    {
+      "type": "SDFGState",
+      "label": "state2",
+      "id": 1,
+      "collapsed": false,
+      "scope_dict": {
+        "-1": [
+          0,
+          1
+        ]
+      },
+      "nodes": [
+        {
+          "type": "AccessNode",
+          "label": "A",
+          "attributes": {
+            "debuginfo": {
+              "type": "DebugInfo",
+              "start_line": 14,
+              "end_line": 14,
+              "start_column": 0,
+              "end_column": 0,
+              "filename": "/home/primrose/Work/IconGrounds/tests/create_in_interstate.py"
+            },
+            "data": "A",
+            "guid": "c7b57c64-7536-4437-9171-de2171aeb76e"
+          },
+          "id": 0,
+          "scope_entry": null,
+          "scope_exit": null
+        },
+        {
+          "type": "Tasklet",
+          "label": "t",
+          "attributes": {
+            "code": {
+              "string_data": "out = a",
+              "language": "Python"
+            },
+            "debuginfo": {
+              "type": "DebugInfo",
+              "start_line": 15,
+              "end_line": 15,
+              "start_column": 0,
+              "end_column": 0,
+              "filename": "/home/primrose/Work/IconGrounds/tests/create_in_interstate.py"
+            },
+            "label": "t",
+            "out_connectors": {
+              "out": null
+            },
+            "guid": "d3b1cb18-fe9d-4130-b4dd-232d03ff261f"
+          },
+          "id": 1,
+          "scope_entry": null,
+          "scope_exit": null
+        }
+      ],
+      "edges": [
+        {
+          "type": "MultiConnectorEdge",
+          "attributes": {
+            "data": {
+              "type": "Memlet",
+              "attributes": {
+                "volume": "1",
+                "subset": {
+                  "type": "Range",
+                  "ranges": [
+                    {
+                      "start": "0",
+                      "end": "0",
+                      "step": "1",
+                      "tile": "1"
+                    }
+                  ]
+                },
+                "data": "A",
+                "debuginfo": null,
+                "guid": "3ec22ffe-83df-4b16-a597-c1705ec0ac71",
+                "src_subset": null,
+                "dst_subset": {
+                  "type": "Range",
+                  "ranges": [
+                    {
+                      "start": "0",
+                      "end": "0",
+                      "step": "1",
+                      "tile": "1"
+                    }
+                  ]
+                },
+                "is_data_src": false,
+                "num_accesses": "1"
+              }
+            }
+          },
+          "src": "1",
+          "dst": "0",
+          "dst_connector": null,
+          "src_connector": "out"
+        }
+      ],
+      "attributes": {
+        "guid": "9cf29aae-f608-4442-9d0a-f22f1956da4c"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "type": "Edge",
+      "attributes": {
+        "data": {
+          "type": "InterstateEdge",
+          "attributes": {
+            "assignments": {
+              "a": "0"
+            },
+            "guid": "f9834bae-f2d2-4f8d-be03-f80ae74b3b48"
+          },
+          "label": "a=0"
+        }
+      },
+      "src": "0",
+      "dst": "1"
+    }
+  ],
+  "collapsed": false,
+  "label": "",
+  "id": null,
+  "cfg_list_id": 0,
+  "start_block": null,
+  "dace_version": "1.0.0"
+}
