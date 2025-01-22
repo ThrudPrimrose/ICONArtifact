@@ -153,11 +153,6 @@ def clean_unused_members(sdfg: dace.SDFG, save_names: bool = False, save_as: str
                 sdfg.remove_data(name, validate=True)
                 num_removed_arr += 1
             else:
-                if "verts" == name:
-                    pass
-                    #print("1", src.members)
-                    #print("2", src.free_symbols)
-                    #print("3", arrays[name])
                 del arrays[name]
                 assert src._validate()
                 num_removed_member += 1
